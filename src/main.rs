@@ -1,4 +1,4 @@
-mod vec3;
+use raytracing::color::Color;
 
 fn main() {
     let image_width = 256;
@@ -9,15 +9,12 @@ fn main() {
     for j in (0..image_height).rev() {
         eprint!("\rScanlines remaining: {} ", j);
         for i in 0..image_width {
-            let r = i as f32 / (image_width - 1) as f32;
-            let g = j as f32 / (image_height - 1) as f32;
-            let b = 0.25f32;
-
-            let ir = (255.999 * r) as u8;
-            let ig = (255.999 * g) as u8;
-            let ib = (255.999 * b) as u8;
-
-            print!("{} {} {}\n", ir, ig, ib);
+            let pixel_color = Color::new(
+                i as f32 / (image_width - 1) as f32,
+                j as f32 / (image_height - 1) as f32,
+                0.25f32,
+            );
+            Color::write_color(pixel_color);
         }
     }
     eprint!("\nDone.\n");

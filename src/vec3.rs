@@ -75,7 +75,7 @@ impl std::ops::DivAssign<f32> for Vec3 {
 }
 
 impl Vec3 {
-    fn length_squared(self) -> f32 {
+    pub fn length_squared(self) -> f32 {
         self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]
     }
     fn length(self) -> f32 {

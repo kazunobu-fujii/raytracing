@@ -1,11 +1,20 @@
+use crate::rtweekend::clamp;
 use crate::vec3::Color;
 
-impl Color {
-    pub fn write_color(pixel_color: Color) {
-        let r = (255.999 * pixel_color.x()) as u8;
-        let g = (255.999 * pixel_color.y()) as u8;
-        let b = (255.999 * pixel_color.z()) as u8;
+pub fn write_color(pixel_color: Color, samples_per_pixel: i32) {
+    let mut r = pixel_color.x();
+    let mut g = pixel_color.y();
+    let mut b = pixel_color.z();
 
-        print!("{} {} {}\n", r, g, b);
-    }
+    let scale = 1.0 / samples_per_pixel as f32;
+    r *= scale;
+    g *= scale;
+    b *= scale;
+
+    print!(
+        "{} {} {}\n",
+        (256.0 * clamp(r, 0.0, 0.999)) as u8,
+        (256.0 * clamp(g, 0.0, 0.999)) as u8,
+        (256.0 * clamp(b, 0.0, 0.999)) as u8
+    )
 }

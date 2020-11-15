@@ -13,7 +13,7 @@ fn ray_color<T: Hittable>(r: &Ray, world: &T, depth: i32) -> Color {
     }
     let mut rec = HitRecord::new();
     if world.hit(r, 0.001, INFINITY, &mut rec) {
-        let target = rec.p + rec.normal + Vec3::random_in_unit_sphere();
+        let target = rec.p + Vec3::random_in_hemisphere(&rec.normal);
         return 0.5 * ray_color(&Ray::new(rec.p, target - rec.p), world, depth - 1);
     }
     let unit_direction = Vec3::unit_vector(r.direction());

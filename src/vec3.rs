@@ -1,3 +1,5 @@
+use crate::rtweekend::{random_double, random_double_with};
+
 #[derive(Clone, Copy)]
 pub struct Vec3 {
     pub e: [f32; 3],
@@ -12,6 +14,29 @@ impl Vec3 {
     }
     pub fn new(e0: f32, e1: f32, e2: f32) -> Vec3 {
         Vec3 { e: [e0, e1, e2] }
+    }
+    pub fn random() -> Vec3 {
+        Vec3 {
+            e: [random_double(), random_double(), random_double()],
+        }
+    }
+    pub fn random_with(min: f32, max: f32) -> Vec3 {
+        Vec3 {
+            e: [
+                random_double_with(min, max),
+                random_double_with(min, max),
+                random_double_with(min, max),
+            ],
+        }
+    }
+    pub fn random_in_unit_sphere() -> Vec3 {
+        loop {
+            let p = Vec3::random_with(-1.0, 1.0);
+            if p.length_squared() >= 1.0 {
+                continue;
+            }
+            return p;
+        }
     }
     pub fn x(&self) -> f32 {
         self.e[0]

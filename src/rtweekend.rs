@@ -12,6 +12,10 @@ pub fn random_double() -> f32 {
     rng.gen()
 }
 
+pub fn random_double_with(min: f32, max: f32) -> f32 {
+    min + (max - min) * random_double()
+}
+
 pub fn clamp(x: f32, min: f32, max: f32) -> f32 {
     if x < min {
         return min;

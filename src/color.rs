@@ -11,7 +11,11 @@ pub fn write(pixel_color: Color, samples_per_pixel: i16) {
     g = (scale * g).sqrt();
     b = (scale * b).sqrt();
 
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    #[allow(
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss,
+        clippy::as_conversions
+    )]
     let to_byte = |v: f32| -> u8 { (256.0 * clamp(v, 0.0, 0.999)) as u8 };
     println!("{} {} {}", to_byte(r), to_byte(g), to_byte(b),);
 }

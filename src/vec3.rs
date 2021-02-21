@@ -58,6 +58,25 @@ impl Vec3 {
     pub fn z(&self) -> f32 {
         self.e[2]
     }
+    pub fn length_squared(self) -> f32 {
+        self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]
+    }
+    fn length(self) -> f32 {
+        self.length_squared().sqrt()
+    }
+    pub fn dot(u: &Vec3, v: &Vec3) -> f32 {
+        u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] * v.e[2]
+    }
+    pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
+        Vec3::new(
+            u.e[1] * v.e[2] - u.e[2] * v.e[1],
+            u.e[2] * v.e[0] - u.e[0] * v.e[2],
+            u.e[0] * v.e[1] - u.e[1] * v.e[0],
+        )
+    }
+    pub fn unit_vector(v: Vec3) -> Vec3 {
+        v / v.length()
+    }
 }
 
 impl std::ops::Neg for Vec3 {
@@ -72,12 +91,14 @@ impl std::ops::Neg for Vec3 {
 impl std::ops::Index<usize> for Vec3 {
     type Output = f32;
     fn index(&self, idx: usize) -> &Self::Output {
+        #[allow(clippy::indexing_slicing)]
         &self.e[idx]
     }
 }
 
 impl std::ops::IndexMut<usize> for Vec3 {
     fn index_mut(&mut self, idx: usize) -> &mut Self::Output {
+        #[allow(clippy::indexing_slicing)]
         &mut self.e[idx]
     }
 }
@@ -107,15 +128,6 @@ impl std::ops::DivAssign<f32> for Vec3 {
         *self = Self {
             e: [self.e[0] / other, self.e[1] / other, self.e[2] / other],
         };
-    }
-}
-
-impl Vec3 {
-    pub fn length_squared(self) -> f32 {
-        self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]
-    }
-    fn length(self) -> f32 {
-        self.length_squared().sqrt()
     }
 }
 
@@ -192,23 +204,8 @@ impl std::ops::Div<f32> for Vec3 {
     }
 }
 
-impl Vec3 {
-    pub fn dot(u: &Vec3, v: &Vec3) -> f32 {
-        u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] * v.e[2]
-    }
-    pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
-        Vec3::new(
-            u.e[1] * v.e[2] - u.e[2] * v.e[1],
-            u.e[2] * v.e[0] - u.e[0] * v.e[2],
-            u.e[0] * v.e[1] - u.e[1] * v.e[0],
-        )
-    }
-    pub fn unit_vector(v: Vec3) -> Vec3 {
-        v / v.length()
-    }
-}
-
 #[cfg(test)]
+#[allow(clippy::indexing_slicing)]
 mod tests {
     use super::*;
     #[test]

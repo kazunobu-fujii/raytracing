@@ -1,4 +1,12 @@
-#![warn(clippy::all, clippy::pedantic)]
+#![warn(clippy::all, clippy::pedantic, clippy::restriction)]
+#![allow(
+    clippy::missing_docs_in_private_items,
+    clippy::blanket_clippy_restriction_lints,
+    clippy::implicit_return,
+    clippy::float_arithmetic,
+    clippy::print_stdout,
+    clippy::print_stderr
+)]
 mod camera;
 mod color;
 mod hittable;
@@ -22,7 +30,12 @@ fn ray_color<T: Hittable>(r: &Ray, world: &T, depth: i32) -> Color {
     let mut rec = HitRecord::new();
     if world.hit(r, 0.001, INFINITY, &mut rec) {
         let target = rec.p + Vec3::random_in_hemisphere(&rec.normal);
-        return 0.5 * ray_color(&Ray::new(rec.p, target - rec.p), world, depth - 1);
+        return 0.5
+            * ray_color(
+                &Ray::new(rec.p, target - rec.p),
+                world,
+                depth.saturating_sub(1),
+            );
     }
     let unit_direction = Vec3::unit_vector(r.direction());
     let t = 0.5 * (unit_direction.y() + 1.0);
@@ -33,7 +46,7 @@ fn main() {
     // Image
     let aspect_ratio = 16.0 / 9.0;
     let image_width: i16 = 400;
-    #[allow(clippy::cast_possible_truncation)]
+    #[allow(clippy::cast_possible_truncation, clippy::as_conversions)]
     let image_height: i16 = (f32::from(image_width) / aspect_ratio) as i16;
     let samples_per_pixel = 100;
     let max_depth = 50;

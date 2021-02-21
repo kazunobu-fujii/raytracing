@@ -276,19 +276,18 @@ mod tests {
         assert_eq!(v.e[0], 2.0);
         assert_eq!(v.e[1], 4.0);
         assert_eq!(v.e[2], 6.0);
-        let a = Vec3::new(0.1, 0.2, 0.4);
-        let b = v * a;
+        let a = v * Vec3::new(0.1, 0.2, 0.4);
+        assert_eq!(a.e[0], 0.2);
+        assert_eq!(a.e[1], 0.8);
+        assert_eq!(a.e[2], 2.4);
+        let b = v * 0.1;
         assert_eq!(b.e[0], 0.2);
-        assert_eq!(b.e[1], 0.8);
-        assert_eq!(b.e[2], 2.4);
-        let c = v * 0.1;
+        assert_eq!(b.e[1], 0.4);
+        assert_eq!(b.e[2], 0.6);
+        let c = 0.1 * v;
         assert_eq!(c.e[0], 0.2);
         assert_eq!(c.e[1], 0.4);
         assert_eq!(c.e[2], 0.6);
-        let d = 0.1 * v;
-        assert_eq!(d.e[0], 0.2);
-        assert_eq!(d.e[1], 0.4);
-        assert_eq!(d.e[2], 0.6);
     }
     #[test]
     fn test_div() {

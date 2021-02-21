@@ -13,7 +13,8 @@ impl Hittable for Sphere {
         let a = r.direction().length_squared();
         let half_b = Vec3::dot(&oc, &r.direction());
         let c = oc.length_squared() - self.radius * self.radius;
-        let discriminant = half_b * half_b - a * c;
+        let half_b_squared = half_b * half_b;
+        let discriminant = half_b_squared - a * c;
         if discriminant < 0.0 {
             return false;
         }
@@ -32,6 +33,6 @@ impl Hittable for Sphere {
         rec.p = r.at(rec.t);
         let outward_normal = (rec.p - self.center) / self.radius;
         rec.set_face_normal(r, outward_normal);
-        return true;
+        true
     }
 }

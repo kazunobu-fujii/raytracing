@@ -23,17 +23,17 @@ impl Camera {
             origin - horizontal / 2.0 - vertical / 2.0 - Vec3::new(0.0, 0.0, focal_length);
 
         Camera {
-            origin: origin,
-            lower_left_corner: lower_left_corner,
-            horizontal: horizontal,
-            vertical: vertical,
+            origin,
+            lower_left_corner,
+            horizontal,
+            vertical,
         }
     }
 
     pub fn get_ray(self, u: f32, v: f32) -> Ray {
-        return Ray::new(
+        Ray::new(
             self.origin,
             self.lower_left_corner + u * self.horizontal + v * self.vertical - self.origin,
-        );
+        )
     }
 }

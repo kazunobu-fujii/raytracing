@@ -1,11 +1,20 @@
-use raytracing::camera::Camera;
-use raytracing::color::write_color;
-use raytracing::hittable::{HitRecord, Hittable};
-use raytracing::hittable_list::HittableList;
-use raytracing::ray::Ray;
-use raytracing::rtweekend::{random_double, INFINITY};
-use raytracing::sphere::Sphere;
-use raytracing::vec3::{Color, Point3, Vec3};
+#![warn(clippy::all)]
+mod camera;
+mod color;
+mod hittable;
+mod hittable_list;
+mod ray;
+mod rtweekend;
+mod sphere;
+mod vec3;
+use camera::Camera;
+use color::write_color;
+use hittable::{HitRecord, Hittable};
+use hittable_list::HittableList;
+use ray::Ray;
+use rtweekend::{random_double, INFINITY};
+use sphere::Sphere;
+use vec3::{Color, Point3, Vec3};
 
 fn ray_color<T: Hittable>(r: &Ray, world: &T, depth: i32) -> Color {
     if depth <= 0 {

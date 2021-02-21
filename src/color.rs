@@ -11,10 +11,10 @@ pub fn write_color(pixel_color: Color, samples_per_pixel: i32) {
     g = (scale * g).sqrt();
     b = (scale * b).sqrt();
 
-    print!(
-        "{} {} {}\n",
+    println!(
+        "{} {} {}",
         (256.0 * clamp(r, 0.0, 0.999)) as u8,
         (256.0 * clamp(g, 0.0, 0.999)) as u8,
-        (256.0 * clamp(b, 0.0, 0.999)) as u8
-    )
+        (256.0 * clamp(b, 0.0, 0.999)) as u8,
+    );
 }

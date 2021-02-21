@@ -1,4 +1,4 @@
-#![warn(clippy::all)]
+#![warn(clippy::all, clippy::pedantic)]
 mod camera;
 mod color;
 mod hittable;
@@ -8,7 +8,6 @@ mod rtweekend;
 mod sphere;
 mod vec3;
 use camera::Camera;
-use color::write_color;
 use hittable::{HitRecord, Hittable};
 use hittable_list::HittableList;
 use ray::Ray;
@@ -33,8 +32,9 @@ fn ray_color<T: Hittable>(r: &Ray, world: &T, depth: i32) -> Color {
 fn main() {
     // Image
     let aspect_ratio = 16.0 / 9.0;
-    let image_width = 400;
-    let image_height = (image_width as f32 / aspect_ratio) as i32;
+    let image_width: i16 = 400;
+    #[allow(clippy::cast_possible_truncation)]
+    let image_height: i16 = (f32::from(image_width) / aspect_ratio) as i16;
     let samples_per_pixel = 100;
     let max_depth = 50;
     // World
@@ -56,12 +56,12 @@ fn main() {
         for i in 0..image_width {
             let mut pixel_color = Color::new(0.0, 0.0, 0.0);
             for _ in 0..samples_per_pixel {
-                let u = (i as f32 + random_double()) / (image_width - 1) as f32;
-                let v = (j as f32 + random_double()) / (image_height - 1) as f32;
+                let u = (f32::from(i) + random_double()) / f32::from(image_width - 1);
+                let v = (f32::from(j) + random_double()) / f32::from(image_height - 1);
                 let r = cam.get_ray(u, v);
                 pixel_color += ray_color(&r, &world, max_depth);
             }
-            write_color(pixel_color, samples_per_pixel);
+            color::write(pixel_color, samples_per_pixel);
         }
     }
     eprint!("\nDone.\n");

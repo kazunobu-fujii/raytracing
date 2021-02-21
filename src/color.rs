@@ -1,20 +1,17 @@
 use crate::rtweekend::clamp;
 use crate::vec3::Color;
 
-pub fn write_color(pixel_color: Color, samples_per_pixel: i32) {
+pub fn write(pixel_color: Color, samples_per_pixel: i16) {
     let mut r = pixel_color.x();
     let mut g = pixel_color.y();
     let mut b = pixel_color.z();
 
-    let scale = 1.0 / samples_per_pixel as f32;
+    let scale = 1.0 / f32::from(samples_per_pixel);
     r = (scale * r).sqrt();
     g = (scale * g).sqrt();
     b = (scale * b).sqrt();
 
-    println!(
-        "{} {} {}",
-        (256.0 * clamp(r, 0.0, 0.999)) as u8,
-        (256.0 * clamp(g, 0.0, 0.999)) as u8,
-        (256.0 * clamp(b, 0.0, 0.999)) as u8,
-    );
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    let to_byte = |v: f32| -> u8 { (256.0 * clamp(v, 0.0, 0.999)) as u8 };
+    println!("{} {} {}", to_byte(r), to_byte(g), to_byte(b),);
 }
